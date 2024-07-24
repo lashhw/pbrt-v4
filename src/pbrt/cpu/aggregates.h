@@ -13,6 +13,7 @@
 #include <atomic>
 #include <memory>
 #include <vector>
+#include <fstream>
 
 namespace pbrt {
 
@@ -67,6 +68,7 @@ class BVHAggregate {
     std::vector<Primitive> primitives;
     SplitMethod splitMethod;
     LinearBVHNode *nodes = nullptr;
+    mutable std::ofstream ray_queries_file;
 };
 
 struct KdTreeNode;

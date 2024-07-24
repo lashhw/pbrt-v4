@@ -142,6 +142,9 @@ BVHAggregate::BVHAggregate(std::vector<Primitive> prims, int maxPrimsInNode,
     : maxPrimsInNode(std::min(255, maxPrimsInNode)),
       primitives(std::move(prims)),
       splitMethod(splitMethod) {
+    ray_queries_file.open("ray_queries.bin", std::ios::binary);
+    Warning("ray_queries.bin created.");
+
     CHECK(!primitives.empty());
     // Build BVH from _primitives_
     // Initialize _bvhPrimitives_ array for primitives
@@ -528,6 +531,14 @@ Bounds3f BVHAggregate::Bounds() const {
 
 pstd::optional<ShapeIntersection> BVHAggregate::Intersect(const Ray &ray,
                                                           Float tMax) const {
+    ray_queries_file.write(reinterpret_cast<const char*>(&ray.o.x), sizeof(Float));
+    ray_queries_file.write(reinterpret_cast<const char*>(&ray.o.y), sizeof(Float));
+    ray_queries_file.write(reinterpret_cast<const char*>(&ray.o.z), sizeof(Float));
+    ray_queries_file.write(reinterpret_cast<const char*>(&ray.d.x), sizeof(Float));
+    ray_queries_file.write(reinterpret_cast<const char*>(&ray.d.y), sizeof(Float));
+    ray_queries_file.write(reinterpret_cast<const char*>(&ray.d.z), sizeof(Float));
+    ray_queries_file.write(reinterpret_cast<const char*>(&tMax), sizeof(Float));
+
     if (!nodes)
         return {};
     pstd::optional<ShapeIntersection> si;

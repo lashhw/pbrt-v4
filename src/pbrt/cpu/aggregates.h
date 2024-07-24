@@ -69,6 +69,7 @@ class BVHAggregate {
     SplitMethod splitMethod;
     LinearBVHNode *nodes = nullptr;
     mutable std::ofstream ray_queries_file;
+    mutable std::ofstream result_file;
 };
 
 struct KdTreeNode;

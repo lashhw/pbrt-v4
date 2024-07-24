@@ -143,7 +143,8 @@ BVHAggregate::BVHAggregate(std::vector<Primitive> prims, int maxPrimsInNode,
       primitives(std::move(prims)),
       splitMethod(splitMethod) {
     ray_queries_file.open("ray_queries.bin", std::ios::binary);
-    Warning("ray_queries.bin created.");
+    result_file.open("result.bin", std::ios::binary);
+    Warning("ray_queries.bin/result.bin created.");
 
     CHECK(!primitives.empty());
     // Build BVH from _primitives_
@@ -586,6 +587,7 @@ pstd::optional<ShapeIntersection> BVHAggregate::Intersect(const Ray &ray,
     }
 
     bvhNodesVisited += nodesVisited;
+    result_file.write(reinterpret_cast<const char*>(&si->tHit), sizeof(Float));
     return si;
 }
 

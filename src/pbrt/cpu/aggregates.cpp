@@ -587,7 +587,8 @@ pstd::optional<ShapeIntersection> BVHAggregate::Intersect(const Ray &ray,
     }
 
     bvhNodesVisited += nodesVisited;
-    result_file.write(reinterpret_cast<const char*>(&si->tHit), sizeof(Float));
+    bool hit = si.has_value();
+    result_file.write(reinterpret_cast<const char*>(&hit), sizeof(bool));
     return si;
 }
 

@@ -150,6 +150,9 @@ void BasicSceneBuilder::Camera(const std::string &name, ParsedParameterVector pa
         AnimatedTransform(worldFromCamera[0], graphicsState.transformStartTime,
                           worldFromCamera[1], graphicsState.transformEndTime));
     renderFromWorld = cameraTransform.RenderFromWorld();
+    std::ofstream render_from_world_fs("render_from_world.bin", std::ios::binary);
+    Warning("render_from_world.bin created.");
+    render_from_world_fs.write(reinterpret_cast<const char*>(&renderFromWorld), sizeof(renderFromWorld));
 
     camera = CameraSceneEntity(name, std::move(dict), loc, cameraTransform,
                                graphicsState.currentOutsideMedium);

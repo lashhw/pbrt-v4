@@ -589,17 +589,10 @@ pstd::optional<ShapeIntersection> BVHAggregate::Intersect(const Ray &ray,
     bvhNodesVisited += nodesVisited;
     uint32_t hit = si.has_value();
     Float t = 0.0f;
-    Float u = 0.0f;
-    Float v = 0.0f;
-    if (si) {
+    if (si)
         t = si->tHit;
-        u = si->intr.uv[0];
-        v = si->intr.uv[1];
-    }
     result_file.write(reinterpret_cast<const char*>(&hit), sizeof(uint32_t));
     result_file.write(reinterpret_cast<const char*>(&t), sizeof(Float));
-    result_file.write(reinterpret_cast<const char*>(&u), sizeof(Float));
-    result_file.write(reinterpret_cast<const char*>(&v), sizeof(Float));
     return si;
 }
 

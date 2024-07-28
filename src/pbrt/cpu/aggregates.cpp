@@ -539,6 +539,7 @@ pstd::optional<ShapeIntersection> BVHAggregate::Intersect(const Ray &ray,
     ray_queries_file.write(reinterpret_cast<const char*>(&ray.d.y), sizeof(Float));
     ray_queries_file.write(reinterpret_cast<const char*>(&ray.d.z), sizeof(Float));
     ray_queries_file.write(reinterpret_cast<const char*>(&tMax), sizeof(Float));
+    ray_queries_file.flush();
 
     if (!nodes)
         return {};
@@ -593,6 +594,7 @@ pstd::optional<ShapeIntersection> BVHAggregate::Intersect(const Ray &ray,
         t = si->tHit;
     result_file.write(reinterpret_cast<const char*>(&hit), sizeof(uint32_t));
     result_file.write(reinterpret_cast<const char*>(&t), sizeof(Float));
+    result_file.flush();
     return si;
 }
 
